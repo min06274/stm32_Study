@@ -92,9 +92,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_GPIO_WritePin(GPIO_LED_GPIO_Port, GPIO_LED_Pin, 1);
-	  HAL_Delay(100);
 	  HAL_GPIO_WritePin(GPIO_LED_GPIO_Port, GPIO_LED_Pin, 0);
+	  HAL_Delay(100);
+	  HAL_GPIO_WritePin(GPIO_LED_GPIO_Port, GPIO_LED_Pin, 1);
 	  HAL_Delay(100);
 	  /* USER CODE END WHILE */
 
