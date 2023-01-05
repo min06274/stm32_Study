@@ -83,18 +83,27 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
+  //MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
 
+  //GPIOC CLock Enable
+  volatile unsigned int * reg = 0x40021018;
+  *reg |= 16;
+
+  //set PC13 speed high, output pp mode
+  volatile unsigned int * reg2 = 0x40011004;
+  *reg2 = (*reg2 & ~(15UL << 20U)) | (3U <<20U);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  //PC13 set/reset register address
+  volatile unsigned int * reg3 = 0x40011010;
   while (1)
   {
-	  HAL_GPIO_WritePin(GPIO_LED_GPIO_Port, GPIO_LED_Pin, 1);
+	  *reg3 = 0x2000; //0000 0000 0000 0000 0010 0000 0000 0000(0x00002000)  == set
 	  HAL_Delay(100);
-	  HAL_GPIO_WritePin(GPIO_LED_GPIO_Port, GPIO_LED_Pin, 0);
+	  *reg3 = (0x2000<<16); //0010 0000 0000 0000 0000 0000 0000 0000(0x20000000) == reset
 	  HAL_Delay(100);
 	  /* USER CODE END WHILE */
 
