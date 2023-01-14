@@ -55,7 +55,11 @@ static void MX_USART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+int _write(int file, char *p, int len)
+{
+	HAL_UART_Transmit(&huart1, (uint8_t *)p, len, 10);
+	return len;
+}
 /* USER CODE END 0 */
 
 /**
@@ -105,8 +109,10 @@ int main(void)
   char senddata[20] = "Hello World\r\n";
   while (1)
   {
-	  HAL_UART_Transmit(&huart1, senddata, strlen(senddata), 1000);
 
+	  printf("Love Eddy\n");
+	  //HAL_UART_Transmit(&huart1, senddata, strlen(senddata), 1000);
+	  HAL_Delay(1000);
 	  //*reg3 = 0x2000; //0000 0000 0000 0000 0010 0000 0000 0000(0x00002000)  == set
 	  //HAL_Delay(100);
 	  //*reg3 = (0x2000<<16); //0010 0000 0000 0000 0000 0000 0000 0000(0x20000000) == reset
