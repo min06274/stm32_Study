@@ -110,9 +110,13 @@ int main(void)
   while (1)
   {
 
-	  printf("Love Eddy\n");
-	  //HAL_UART_Transmit(&huart1, senddata, strlen(senddata), 1000);
+	  HAL_GPIO_WritePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin, 0);
 	  HAL_Delay(1000);
+	  HAL_GPIO_WritePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin, 1);
+	  HAL_Delay(1000);
+	  //printf("Love Eddy\n");
+	  //HAL_UART_Transmit(&huart1, senddata, strlen(senddata), 1000);
+	  //HAL_Delay(1000);
 	  //*reg3 = 0x2000; //0000 0000 0000 0000 0010 0000 0000 0000(0x00002000)  == set
 	  //HAL_Delay(100);
 	  //*reg3 = (0x2000<<16); //0010 0000 0000 0000 0000 0000 0000 0000(0x20000000) == reset
@@ -205,9 +209,13 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIO_LED_GPIO_Port, GPIO_LED_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin : GPIO_LED_Pin */
   GPIO_InitStruct.Pin = GPIO_LED_Pin;
@@ -215,6 +223,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIO_LED_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PB6_LED1_Pin */
+  GPIO_InitStruct.Pin = PB6_LED1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(PB6_LED1_GPIO_Port, &GPIO_InitStruct);
 
 }
 
