@@ -21,11 +21,13 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
+#include "fnd_controller.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+#include <stdio.h>
 
 /* USER CODE END PTD */
 
@@ -40,7 +42,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart1;
-int button_state = 0;
+
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -93,13 +95,8 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  //GPIOC CLock Enable
-  volatile unsigned int * reg = 0x40021018;
-  *reg |= 16;
+  init_fnd();
 
-  //set PC13 speed high, output pp mode
-  volatile unsigned int * reg2 = 0x40011004;
-  *reg2 = (*reg2 & ~(15UL << 20U)) | (3U <<20U);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -110,31 +107,11 @@ int main(void)
   while (1)
   {
 
+		for (int i = 0; i <= 99; i++) {
+			digit2(i, 0b0001, 50); //send counter 0-99 with delay 50 cicles int 1st and 2nd view ports
+		}
 
-	 if(!HAL_GPIO_ReadPin(PB_TEMP_SET_UP_GPIO_Port, PB_TEMP_SET_UP_Pin))
-	 {
-		  HAL_GPIO_WritePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin, 0);
-	 }
-	 else
-	 {
-		  HAL_GPIO_WritePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin, 1);
 
-	 }
-
-	  HAL_Delay(500);
-	  /*
-	  HAL_GPIO_WritePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin, 0);
-	  HAL_Delay(1000);
-	  HAL_GPIO_WritePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin, 1);
-	  HAL_Delay(1000);
-	*/
-	  //printf("Love Eddy\n");
-	  //HAL_UART_Transmit(&huart1, senddata, strlen(senddata), 1000);
-	  //HAL_Delay(1000);
-	  //*reg3 = 0x2000; //0000 0000 0000 0000 0010 0000 0000 0000(0x00002000)  == set
-	  //HAL_Delay(100);
-	  //*reg3 = (0x2000<<16); //0010 0000 0000 0000 0000 0000 0000 0000(0x20000000) == reset
-	  //HAL_Delay(100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -229,7 +206,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIO_LED_GPIO_Port, GPIO_LED_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOB, FND_RCLK_Pin|FND_DIO_Pin|FND_SCLK_Pin|PB6_LED1_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin : GPIO_LED_Pin */
   GPIO_InitStruct.Pin = GPIO_LED_Pin;
@@ -243,6 +220,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(PB_TEMP_SET_UP_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : FND_RCLK_Pin FND_DIO_Pin FND_SCLK_Pin */
+  GPIO_InitStruct.Pin = FND_RCLK_Pin|FND_DIO_Pin|FND_SCLK_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PB6_LED1_Pin */
   GPIO_InitStruct.Pin = PB6_LED1_Pin;
