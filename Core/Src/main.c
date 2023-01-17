@@ -107,8 +107,15 @@ int main(void)
   while (1)
   {
 
+	  /*
 		for (int i = 0; i <= 99; i++) {
 			digit2(i, 0b0001, 50); //send counter 0-99 with delay 50 cicles int 1st and 2nd view ports
+		}
+*/
+		for (int i = 0; i <= 99; i++) {
+
+			digit4showZero_replay(i,100); //send counter 0-99 with delay 50 cicles int 3st and 4rd view ports
+
 		}
 
 
