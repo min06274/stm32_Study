@@ -123,7 +123,7 @@ int main(void)
 
 		for (int i = 0; i <= 9999; i++) {
 
-			digit4_temper(i, 50); //send counter 0-9999 with delay 50 cicles and hide zero
+			digit4_temper(i, 100); //send counter 0-9999 with delay 50 cicles and hide zero
 
 		}
 
