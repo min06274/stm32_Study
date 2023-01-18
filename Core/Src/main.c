@@ -112,12 +112,20 @@ int main(void)
 			digit2(i, 0b0001, 50); //send counter 0-99 with delay 50 cicles int 1st and 2nd view ports
 		}
 */
+
+	  /*
 		for (int i = 0; i <= 99; i++) {
 
 			digit4showZero_replay(i,100); //send counter 0-99 with delay 50 cicles int 3st and 4rd view ports
 
 		}
+*/
 
+		for (int i = 0; i <= 9999; i++) {
+
+			digit4_temper(i, 50); //send counter 0-9999 with delay 50 cicles and hide zero
+
+		}
 
     /* USER CODE END WHILE */
 

@@ -85,6 +85,22 @@ void digit4_show(int n, int replay, uint8_t showZero)
  }
 }
 
+void digit4_temper(int n, int replay)
+{
+  int n1, n2, n3, n4;
+  n1 = (int)  n % 10;
+  n2 = (int) ((n % 100)-n1)/10;
+  n3 = (int) ((n % 1000) - n2 - n1) / 100;
+  n4 = (int) ((n % 10000) - n3 - n2 - n1) / 1000;
+
+ for(int i = 0; i<=replay; i++){
+	send_port(_LED_0F[n1], 0b0001);
+    send_port(_LED_0F[n2] & 0x7F, 0b0010);
+    if(n>99)send_port(_LED_0F[n3], 0b0100);
+    if(n>999)send_port(_LED_0F[n4], 0b1000);
+ }
+}
+
 void digit4_replay(int n, int replay)
 {
   digit4_show(n,replay,false);
