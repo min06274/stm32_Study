@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include "fnd_controller.h"
 #include "ds18b20.h"
+#include "heaterController.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -101,7 +102,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //HAL_TIM_Base_Start_IT(&htim2);
   init_fnd();
-  //Ds18b20_Init();
+  Ds18b20_Init();
 
   /* USER CODE END 2 */
 
@@ -113,13 +114,19 @@ int main(void)
   while (1)
   {
 
-	  HAL_GPIO_WritePin(PB5_RELAY_ON_OFF_CTRL_GPIO_Port, PB5_RELAY_ON_OFF_CTRL_Pin, 0);
 
 
-	  /*
+
 	  Ds18b20_ManualConvert();
-	  digit4_temper((int)(ds18b20[0].Temperature*10),5000);
-	   */
+	  if(getCurrentTemper() > 25){
+		  heaterControll(t_ON);
+	  }
+	  else if(getCurrentTemper() <24){
+		  heaterControll(t_OFF);
+	  }
+
+	  //digit4_temper((int)(ds18b20[0].Temperature*10),5000);
+
 
 	  /*
 		for (int i = 0; i <= 99; i++) {
