@@ -33,7 +33,7 @@ void digit4_replay(int n, int replay);
 
 void digit4(int n);
 
-void digit4_temper(int n, int replay);
+void digit4_temper(int temper);
 
 void digit4showZero_replay(int n, int replay);
 
