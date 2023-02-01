@@ -115,8 +115,21 @@ void digit4_temper(int temper)
   }
   m_tempercount++;
 
+  /*
   if(m_tempercount>=4)
   {
+	  m_tempercount = 0;
+  }
+  */
+  //below, '5' emphasis problem solution
+
+  if(temper > 999 && m_tempercount>=4){
+	  m_tempercount = 0;
+  }
+  else if(temper>99 && m_tempercount >=3){
+	  m_tempercount = 0;
+  }
+  else if(temper<=99 && m_tempercount>=2){
 	  m_tempercount = 0;
   }
 }
