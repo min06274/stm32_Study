@@ -36,7 +36,8 @@ uint8_t isTemperSensorInit(){
 }
 
 uint8_t isBusy(){
-	return m_busy;
+	return isBusyLine();
+	//return m_busy;
 }
 
 uint8_t isConverting(){

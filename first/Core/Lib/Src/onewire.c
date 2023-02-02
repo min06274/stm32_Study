@@ -19,6 +19,11 @@
 #include "onewire.h"
 #include "ds18b20Config.h"
 //#include "tim.h"
+static uint8_t m_busy_line = 0;
+uint8_t isBusyLine(){
+
+	return m_busy_line;
+}
 
 void ONEWIRE_DELAY(uint16_t time_us)
 {
@@ -54,6 +59,7 @@ void ONEWIRE_OUTPUT(OneWire_t *gp)
 }
 void OneWire_Init(OneWire_t* OneWireStruct, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin) 
 {	
+	m_busy_line = 0;
 	HAL_TIM_Base_Start(&_DS18B20_TIMER);
 
 	OneWireStruct->GPIOx = GPIOx;
@@ -77,11 +83,13 @@ inline uint8_t OneWire_Reset(OneWire_t* OneWireStruct)
 	ONEWIRE_DELAY(480);
 	ONEWIRE_DELAY(20);
 	/* Release line and wait for 70us */
+	m_busy_line = 1;
 	ONEWIRE_INPUT(OneWireStruct);
 	ONEWIRE_DELAY(70);
 	/* Check bit value */
 	i = HAL_GPIO_ReadPin(OneWireStruct->GPIOx, OneWireStruct->GPIO_Pin);
-	
+	m_busy_line = 0;
+
 	/* Delay for 410 us */
 	ONEWIRE_DELAY(410);
 	/* Return value of presence pulse, 0 = OK, 1 = ERROR */
@@ -90,60 +98,85 @@ inline uint8_t OneWire_Reset(OneWire_t* OneWireStruct)
 
 inline void OneWire_WriteBit(OneWire_t* OneWireStruct, uint8_t bit)
 {
+
 	if (bit) 
 	{
 		/* Set line low */
+		m_busy_line = 1;
 		ONEWIRE_LOW(OneWireStruct);
 		ONEWIRE_OUTPUT(OneWireStruct);
+
 		ONEWIRE_DELAY(10);
+		m_busy_line = 0;
 		
 		/* Bit high */
+		m_busy_line = 1;
 		ONEWIRE_INPUT(OneWireStruct);
-		
+		m_busy_line = 0;
 		/* Wait for 55 us and release the line */
 		ONEWIRE_DELAY(55);
+		m_busy_line = 1;
 		ONEWIRE_INPUT(OneWireStruct);
+		m_busy_line = 0;
+
 	} 
 	else 
 	{
 		/* Set line low */
+		m_busy_line = 1;
 		ONEWIRE_LOW(OneWireStruct);
 		ONEWIRE_OUTPUT(OneWireStruct);
+		m_busy_line = 0;
 		ONEWIRE_DELAY(65);
 		
 		/* Bit high */
+		m_busy_line = 1;
 		ONEWIRE_INPUT(OneWireStruct);
-		
+
 		/* Wait for 5 us and release the line */
 		ONEWIRE_DELAY(5);
+
 		ONEWIRE_INPUT(OneWireStruct);
+		m_busy_line = 0;
+
 	}
+
 
 }
 
 inline uint8_t OneWire_ReadBit(OneWire_t* OneWireStruct) 
 {
+
 	uint8_t bit = 0;
 	
 	/* Line low */
+	m_busy_line = 1;
 	ONEWIRE_LOW(OneWireStruct);
 	ONEWIRE_OUTPUT(OneWireStruct);
+
+
 	ONEWIRE_DELAY(2);
 	
+	m_busy_line = 0;
 	/* Release line */
+	m_busy_line = 1;
 	ONEWIRE_INPUT(OneWireStruct);
 	ONEWIRE_DELAY(10);
-	
+	m_busy_line = 0;
+
 	/* Read line value */
+	m_busy_line = 1;
 	if (HAL_GPIO_ReadPin(OneWireStruct->GPIOx, OneWireStruct->GPIO_Pin)) {
 		/* Bit is HIGH */
 		bit = 1;
 	}
 	
 	/* Wait 50us to complete 60us period */
+	m_busy_line = 0;
 	ONEWIRE_DELAY(50);
 	
 	/* Return bit value */
+
 	return bit;
 }
 

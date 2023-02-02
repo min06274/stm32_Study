@@ -60,6 +60,8 @@ void OneWire_GetFullROM(OneWire_t* OneWireStruct, uint8_t *firstIndex);
 void OneWire_Select(OneWire_t* OneWireStruct, uint8_t* addr);
 void OneWire_SelectWithPointer(OneWire_t* OneWireStruct, uint8_t* ROM);
 uint8_t OneWire_CRC8(uint8_t* addr, uint8_t len);
+uint8_t isBusyLine(void);
+
 //#######################################################################################################
  
 /* C++ detection */
