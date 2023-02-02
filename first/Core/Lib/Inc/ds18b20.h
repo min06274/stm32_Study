@@ -78,7 +78,14 @@ uint8_t 	DS18B20_SetAlarmLowTemperature(OneWire_t* OneWireStruct, uint8_t* ROM, 
 uint8_t 	DS18B20_DisableAlarmTemperature(OneWire_t* OneWireStruct, uint8_t* ROM);
 uint8_t 	DS18B20_AlarmSearch(OneWire_t* OneWireStruct);
 uint8_t 	DS18B20_AllDone(OneWire_t* OneWireStruct);
-float getCurrentTemper();
+float getCurrentTemper(void);
+uint8_t isTemperSensorInit(void);
+bool Ds18b20_Init_Simple(void);
+uint8_t isBusy(void);
+uint8_t isConverting(void);
+void StartConverting(void);
+void checkConverting(void);
+float getTemper(void);
 //###################################################################################
 
  

@@ -5,12 +5,17 @@
 
 //###################################################################################
 Ds18b20Sensor_t	ds18b20[_DS18B20_MAX_SENSORS];
-
+Ds18b20Sensor_t temperSensor;
 OneWire_t OneWire;
 uint8_t	  OneWireDevices;
 uint8_t 	TempSensorCount=0; 
 uint8_t		Ds18b20StartConvert=0;
 uint16_t	Ds18b20Timeout=0;
+
+static uint8_t m_init = 0;
+static uint8_t m_busy = 0;
+static uint8_t m_isConverting = 0;
+
 #if (_DS18B20_USE_FREERTOS==1)
 osThreadId 	Ds18b20Handle;
 void Task_Ds18b20(void const * argument);
@@ -24,6 +29,45 @@ void	Ds18b20_Init(osPriority Priority)
   Ds18b20Handle = osThreadCreate(osThread(myTask_Ds18b20), NULL);	
 }
 #else
+
+
+uint8_t isTemperSensorInit(){
+	return m_init;
+}
+
+uint8_t isBusy(){
+	return m_busy;
+}
+
+uint8_t isConverting(){
+	return m_isConverting;
+}
+bool Ds18b20_Init_Simple(){
+	m_init = 0;
+	OneWire_Init(&OneWire,_DS18B20_GPIO ,_DS18B20_PIN);
+
+	OneWire.ROM_NO[0] = 0x28;
+	OneWire.ROM_NO[1] = 0x1c;
+	OneWire.ROM_NO[2] = 0x59;
+	OneWire.ROM_NO[3] = 0x97;
+	OneWire.ROM_NO[4] = 0x94;
+	OneWire.ROM_NO[5] = 0x12;
+	OneWire.ROM_NO[6] = 0x3;
+	OneWire.ROM_NO[7] = 0x10;
+
+	OneWire_GetFullROM(&OneWire, temperSensor.Address);
+
+	Ds18b20Delay(50);
+	DS18B20_SetResolution(&OneWire, temperSensor.Address, DS18B20_Resolution_12bits);
+	Ds18b20Delay(50);
+	DS18B20_DisableAlarmTemperature(&OneWire,  temperSensor.Address);
+
+
+	m_init = 1;
+
+	return true;
+}
+
 bool	Ds18b20_Init(void)
 {
 	uint8_t	Ds18b20TryToFind=5;
@@ -58,6 +102,28 @@ bool	Ds18b20_Init(void)
 }
 #endif
 //###########################################################################################
+
+void StartConverting(){
+
+	m_busy = 1;
+	DS18B20_StartAll(&OneWire);
+	m_isConverting = 1;
+	m_busy = 0;
+}
+
+void checkConverting(){
+	m_busy = 1;
+	m_isConverting = !DS18B20_AllDone(&OneWire);
+	m_busy = 0;
+}
+
+float getTemper(){
+	Ds18b20Delay(100);
+	m_busy = 1;
+	temperSensor.DataIsValid = DS18B20_Read(&OneWire, temperSensor.Address, &temperSensor.Temperature);
+	m_busy = 0;
+	return temperSensor.Temperature;
+}
 bool	Ds18b20_ManualConvert(void)
 {
 	#if (_DS18B20_USE_FREERTOS==1)
@@ -183,6 +249,9 @@ uint8_t DS18B20_Start(OneWire_t* OneWire, uint8_t *ROM)
 	
 	return 1;
 }
+
+
+
 
 void DS18B20_StartAll(OneWire_t* OneWire)
 {

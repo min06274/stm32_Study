@@ -95,6 +95,15 @@ void digit4_temper(int temper)
   n3 = (int) ((temper % 1000)) / 100;
   n4 = (int) ((temper % 10000)) / 1000;
 
+  /*
+	send_port(_LED_0F[n1], 0b0001);
+    send_port(_LED_0F[n2] & 0x7F, 0b0010);
+    if(temper>99)send_port(_LED_0F[n3], 0b0100);
+    if(temper>999)send_port(_LED_0F[n4], 0b1000);
+
+*/
+
+
   switch(m_tempercount)
   {
   case 0:
@@ -132,6 +141,7 @@ void digit4_temper(int temper)
   else if(temper<=99 && m_tempercount>=2){
 	  m_tempercount = 0;
   }
+
 }
 
 void digit4_replay(int n, int replay)
