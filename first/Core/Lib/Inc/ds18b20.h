@@ -26,7 +26,7 @@ typedef struct
 //###################################################################################
 
 extern Ds18b20Sensor_t	ds18b20[_DS18B20_MAX_SENSORS];
-
+extern Ds18b20Sensor_t temperSensor;
 //###################################################################################
 /* Every onewire chip has different ROM code, but all the same chips has same family code */
 /* in case of DS18B20 this is 0x28 and this is first byte of ROM address */

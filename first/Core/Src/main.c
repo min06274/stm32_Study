@@ -106,7 +106,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //HAL_TIM_Base_Start_IT(&htim2);
   init_fnd();
-  //HAL_TIM_Base_Start_IT(&htim3);
+  HAL_TIM_Base_Start_IT(&htim3);
   //Ds18b20_Init();
   Ds18b20_Init_Simple();
   /* USER CODE END 2 */

@@ -631,5 +631,5 @@ uint8_t DS18B20_AllDone(OneWire_t* OneWire)
 
 float getCurrentTemper(){
 
-	return ds18b20[0].Temperature;
+	return temperSensor.Temperature;
 }
