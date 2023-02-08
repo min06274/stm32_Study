@@ -25,6 +25,11 @@
 #include "fnd_controller.h"
 #include "ds18b20.h"
 #include "heaterController.h"
+#include "fonts.h"
+#include "ssd1306.h"
+#include "test.h"
+#include "bitmap.h"
+#include "horse_anim.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -43,6 +48,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+I2C_HandleTypeDef hi2c2;
+
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 
@@ -58,6 +65,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
+static void MX_I2C2_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -103,12 +111,21 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
+  MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
   //HAL_TIM_Base_Start_IT(&htim2);
-  init_fnd();
-  HAL_TIM_Base_Start_IT(&htim3);
+  //init_fnd();
+  //HAL_TIM_Base_Start_IT(&htim3);
   //Ds18b20_Init();
-  Ds18b20_Init_Simple();
+  //Ds18b20_Init_Simple();
+  SSD1306_Init();
+  SSD1306_GotoXY (0,0);
+  SSD1306_Puts ("HELLO", &Font_11x18, 1);
+  SSD1306_GotoXY (10, 30);
+  SSD1306_Puts ("  WORLD :)", &Font_11x18, 1);
+  SSD1306_UpdateScreen(); //display
+
+  HAL_Delay (2000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -118,10 +135,12 @@ int main(void)
   char senddata[20] = "Hello World\r\n";
   while (1)
   {
+	  HAL_Delay (2000);
 
 
 	  //Ds18b20_ManualConvert();
 
+	  /*
 	  if(!isConverting()){
 	  StartConverting();
 	  }
@@ -130,7 +149,7 @@ int main(void)
 	  if(!isConverting()){
 		  temper = getTemper();
 	  }
-
+*/
 
 	  /*
 	  Ds18b20_ManualConvert();
@@ -235,6 +254,40 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief I2C2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C2_Init(void)
+{
+
+  /* USER CODE BEGIN I2C2_Init 0 */
+
+  /* USER CODE END I2C2_Init 0 */
+
+  /* USER CODE BEGIN I2C2_Init 1 */
+
+  /* USER CODE END I2C2_Init 1 */
+  hi2c2.Instance = I2C2;
+  hi2c2.Init.ClockSpeed = 400000;
+  hi2c2.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  hi2c2.Init.OwnAddress1 = 0;
+  hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c2.Init.OwnAddress2 = 0;
+  hi2c2.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c2.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C2_Init 2 */
+
+  /* USER CODE END I2C2_Init 2 */
+
 }
 
 /**
