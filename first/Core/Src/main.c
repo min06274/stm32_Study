@@ -31,6 +31,7 @@
 #include "bitmap.h"
 #include "horse_anim.h"
 #include "g_var.h"
+#include "eddy_logo.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -120,15 +121,40 @@ int main(void)
   //Ds18b20_Init();
   //Ds18b20_Init_Simple();
   SSD1306_Init();
-  /*
+
   SSD1306_GotoXY (0,0);
   SSD1306_Puts ("HELLO", &Font_11x18, 1);
   SSD1306_GotoXY (10, 30);
   SSD1306_Puts ("  WORLD :)", &Font_11x18, 1);
   SSD1306_UpdateScreen(); //display
-  SSD1306_InvertDisplay(1);
-*/
+  //SSD1306_InvertDisplay(1);
 
+  	  SSD1306_Clear();
+  	  SSD1306_DrawBitmap(0,0,eddylogo1,128,64,1);
+  	  SSD1306_UpdateScreen();
+
+  	  HAL_Delay(300);
+
+  	  SSD1306_Clear();
+  	  SSD1306_DrawBitmap(0,0,eddylogo2,128,64,1);
+  	  SSD1306_UpdateScreen();
+  	  HAL_Delay(300);
+
+  	  SSD1306_Clear();
+  	  SSD1306_DrawBitmap(0,0,eddylogo3,128,64,1);
+  	  SSD1306_UpdateScreen();
+  	  HAL_Delay(300);
+
+  	  SSD1306_Clear();
+  	  SSD1306_DrawBitmap(0,0,eddylogo4,128,64,1);
+  	  SSD1306_UpdateScreen();
+  	  HAL_Delay(300);
+
+
+  	  SSD1306_Clear();
+  	  SSD1306_DrawBitmap(0,0,eddylogo1,128,64,1);
+  	  SSD1306_UpdateScreen();
+  	  HAL_Delay(300);
   /* USER CODE END 2 */
 
   /* Infinite loop */
