@@ -24,6 +24,7 @@
 /* USER CODE BEGIN Includes */
 #include "fnd_controller.h"
 #include "ds18b20.h"
+#include "ex_var.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -200,6 +201,21 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32f1xx.s).                    */
 /******************************************************************************/
+
+/**
+  * @brief This function handles EXTI line0 interrupt.
+  */
+void EXTI0_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI0_IRQn 0 */
+
+  /* USER CODE END EXTI0_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(PB0_TEMP_SET_UP_Pin);
+  /* USER CODE BEGIN EXTI0_IRQn 1 */
+
+  g_f_sw_up = 1;
+  /* USER CODE END EXTI0_IRQn 1 */
+}
 
 /**
   * @brief This function handles TIM2 global interrupt.

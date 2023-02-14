@@ -30,6 +30,7 @@
 #include "test.h"
 #include "bitmap.h"
 #include "horse_anim.h"
+#include "g_var.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -56,6 +57,10 @@ TIM_HandleTypeDef htim3;
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
+int _write(int file,char * p, int len){
+	HAL_UART_Transmit(&huart1, (uint8_t *)p, len, 10);
+	return len;
+}
 
 /* USER CODE END PV */
 
@@ -72,11 +77,7 @@ static void MX_I2C2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-int _write(int file, char *p, int len)
-{
-	HAL_UART_Transmit(&huart1, (uint8_t *)p, len, 10);
-	return len;
-}
+
 /* USER CODE END 0 */
 
 /**
@@ -119,13 +120,15 @@ int main(void)
   //Ds18b20_Init();
   //Ds18b20_Init_Simple();
   SSD1306_Init();
+  /*
   SSD1306_GotoXY (0,0);
   SSD1306_Puts ("HELLO", &Font_11x18, 1);
   SSD1306_GotoXY (10, 30);
   SSD1306_Puts ("  WORLD :)", &Font_11x18, 1);
   SSD1306_UpdateScreen(); //display
+  SSD1306_InvertDisplay(1);
+*/
 
-  HAL_Delay (2000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -135,8 +138,18 @@ int main(void)
   char senddata[20] = "Hello World\r\n";
   while (1)
   {
-	  HAL_Delay (2000);
 
+
+	  if(g_f_sw_up)
+	  {
+
+		  HAL_GPIO_TogglePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin);
+		  g_f_sw_up = 0;
+
+	  }
+
+
+	  HAL_Delay(10);
 
 	  //Ds18b20_ManualConvert();
 
@@ -452,11 +465,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(PA3_TEMP_DATA_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PB_TEMP_SET_UP_Pin */
-  GPIO_InitStruct.Pin = PB_TEMP_SET_UP_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  /*Configure GPIO pin : PB0_TEMP_SET_UP_Pin */
+  GPIO_InitStruct.Pin = PB0_TEMP_SET_UP_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(PB_TEMP_SET_UP_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(PB0_TEMP_SET_UP_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : FND_RCLK_Pin FND_DIO_Pin FND_SCLK_Pin PB5_RELAY_ON_OFF_CTRL_Pin */
   GPIO_InitStruct.Pin = FND_RCLK_Pin|FND_DIO_Pin|FND_SCLK_Pin|PB5_RELAY_ON_OFF_CTRL_Pin;
@@ -471,6 +484,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(PB6_LED1_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 3, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 
 }
 
