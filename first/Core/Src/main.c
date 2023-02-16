@@ -31,7 +31,7 @@
 #include "bitmap.h"
 #include "horse_anim.h"
 #include "g_var.h"
-#include "eddy_logo.h"
+#include "OledController.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -126,58 +126,24 @@ int main(void)
   Ds18b20_Init_Simple();
   SSD1306_Init();
 
-  SSD1306_GotoXY (0,0);
-  SSD1306_Puts ("HELLO", &Font_11x18, 1);
-  SSD1306_GotoXY (10, 30);
-  SSD1306_Puts ("  WORLD :)", &Font_11x18, 1);
-  SSD1306_UpdateScreen(); //display
-  //SSD1306_InvertDisplay(1);
-
-  	  SSD1306_Clear();
-  	  SSD1306_DrawBitmap(0,0,eddylogo1,128,64,1);
-  	  SSD1306_UpdateScreen();
-
-  	  HAL_Delay(300);
-
-  	  SSD1306_Clear();
-  	  SSD1306_DrawBitmap(0,0,eddylogo2,128,64,1);
-  	  SSD1306_UpdateScreen();
-  	  HAL_Delay(300);
-
-  	  SSD1306_Clear();
-  	  SSD1306_DrawBitmap(0,0,eddylogo3,128,64,1);
-  	  SSD1306_UpdateScreen();
-  	  HAL_Delay(300);
-
-  	  SSD1306_Clear();
-  	  SSD1306_DrawBitmap(0,0,eddylogo4,128,64,1);
-  	  SSD1306_UpdateScreen();
-  	  HAL_Delay(300);
+  opening();
 
 
-  	  SSD1306_Clear();
-  	  SSD1306_DrawBitmap(0,0,eddylogo1,128,64,1);
-  	  SSD1306_UpdateScreen();
-  	  HAL_Delay(300);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   //PC13 set/reset register address
+  /*
   volatile unsigned int * reg3 = 0x40011010;
   char senddata[20] = "Hello World\r\n";
+  */
   while (1)
   {
 
 
-	  if(g_f_sw_up)
-	  {
 
-		  HAL_GPIO_TogglePin(PB6_LED1_GPIO_Port, PB6_LED1_Pin);
-		  g_f_sw_up = 0;
-
-	  }
-
+	  checkButton();
 
 
 	  if(!isConverting()){
@@ -193,68 +159,7 @@ int main(void)
 
 	  HAL_Delay(10);
 
-	  //Ds18b20_ManualConvert();
 
-
-	  /*
-	  Ds18b20_ManualConvert();
-	  if(getCurrentTemper() > 25){
-		  heaterControll(t_ON);
-	  }
-	  else if(getCurrentTemper() <24){
-		  heaterControll(t_OFF);
-	  }
-*/
-	  //digit4_temper((int)(ds18b20[0].Temperature*10),5000);
-
-
-	  /*
-		for (int i = 0; i <= 99; i++) {
-			digit2(i, 0b0001, 50); //send counter 0-99 with delay 50 cicles int 1st and 2nd view ports
-		}
-*/
-
-	  /*
-		for (int i = 0; i <= 99; i++) {
-
-			digit4showZero_replay(i,100); //send counter 0-99 with delay 50 cicles int 3st and 4rd view ports
-
-		}
-*/
-
-/*
-		for (int i = 0; i <= 9999; i++) {
-
-			digit4_temper(i, 450); //send counter 0-9999 with delay 50 cicles and hide zero
-
-		}
-*/
-
-	  /*
-	  send_port(0b11111110,0b0001);
-	  HAL_Delay(1000);
-
-	  send_port(0b11111101,0b0001);
-	  HAL_Delay(1000);
-
-	  send_port(0b11111011,0b0001);
-	  HAL_Delay(1000);
-
-	  send_port(0b11110111,0b0001);
-	  HAL_Delay(1000);
-
-	  send_port(0b11101111,0b0001);
-	  HAL_Delay(1000);
-
-	  send_port(0b11011111,0b0001);
-	  HAL_Delay(1000);
-
-	  send_port(0b10111111,0b0001);
-	  HAL_Delay(1000);
-
-	  send_port(0b01111111,0b0001);
-	  HAL_Delay(1000);
-*/
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
