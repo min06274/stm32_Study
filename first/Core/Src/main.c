@@ -116,10 +116,10 @@ int main(void)
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
   //HAL_TIM_Base_Start_IT(&htim2);
-  //init_fnd();
-  //HAL_TIM_Base_Start_IT(&htim3);
+  init_fnd();
+  HAL_TIM_Base_Start_IT(&htim3);
   //Ds18b20_Init();
-  //Ds18b20_Init_Simple();
+  Ds18b20_Init_Simple();
   SSD1306_Init();
 
   SSD1306_GotoXY (0,0);
@@ -175,11 +175,7 @@ int main(void)
 	  }
 
 
-	  HAL_Delay(10);
 
-	  //Ds18b20_ManualConvert();
-
-	  /*
 	  if(!isConverting()){
 	  StartConverting();
 	  }
@@ -188,7 +184,13 @@ int main(void)
 	  if(!isConverting()){
 		  temper = getTemper();
 	  }
-*/
+
+
+
+	  HAL_Delay(10);
+
+	  //Ds18b20_ManualConvert();
+
 
 	  /*
 	  Ds18b20_ManualConvert();
@@ -471,7 +473,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIO_LED_GPIO_Port, GPIO_LED_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(PA3_TEMP_DATA_GPIO_Port, PA3_TEMP_DATA_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(PA2_TEMP_DATA_GPIO_Port, PA2_TEMP_DATA_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, FND_RCLK_Pin|FND_DIO_Pin|FND_SCLK_Pin|PB5_RELAY_ON_OFF_CTRL_Pin
@@ -484,12 +486,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIO_LED_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PA3_TEMP_DATA_Pin */
-  GPIO_InitStruct.Pin = PA3_TEMP_DATA_Pin;
+  /*Configure GPIO pin : PA2_TEMP_DATA_Pin */
+  GPIO_InitStruct.Pin = PA2_TEMP_DATA_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-  HAL_GPIO_Init(PA3_TEMP_DATA_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(PA2_TEMP_DATA_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PB0_TEMP_SET_UP_Pin */
   GPIO_InitStruct.Pin = PB0_TEMP_SET_UP_Pin;

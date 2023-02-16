@@ -10,8 +10,8 @@ extern TIM_HandleTypeDef htim2;
 //###################################################################################
 #define	_DS18B20_USE_FREERTOS		    				0
 #define _DS18B20_MAX_SENSORS		    				1
-#define	_DS18B20_GPIO												PA3_TEMP_DATA_GPIO_Port
-#define	_DS18B20_PIN												PA3_TEMP_DATA_Pin
+#define	_DS18B20_GPIO												PA2_TEMP_DATA_GPIO_Port
+#define	_DS18B20_PIN												PA2_TEMP_DATA_Pin
 
 #define	_DS18B20_CONVERT_TIMEOUT_MS					5000		
 #if (_DS18B20_USE_FREERTOS==1)
