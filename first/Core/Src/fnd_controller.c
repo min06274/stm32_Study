@@ -4,7 +4,9 @@
 
 uint8_t _LED_0F[29];
 
-void init_fnd(){
+static SPI_HandleTypeDef *m_hspi;
+
+void init_fnd(SPI_HandleTypeDef *hspi2){
 
 	_LED_0F[0] = 0xC0; //0
 	_LED_0F[1] = 0xF9; //1
@@ -35,11 +37,14 @@ void init_fnd(){
 	_LED_0F[26] = 0xC1; //U
 	_LED_0F[27] = 0x91; //Y
 	_LED_0F[28] = 0xFE; //hight
+
+	m_hspi = hspi2;
 }
 
 void send(uint8_t X){
 
 
+	/*
 	for(int i = 8; i>=1; i--)
 	{
 		if(X & 0x80)
@@ -56,6 +61,8 @@ void send(uint8_t X){
 		HAL_GPIO_WritePin(FND_SCLK_GPIO_Port, FND_SCLK_Pin, HIGH);
 
 	}
+	*/
+	HAL_SPI_Transmit(m_hspi, &X, 1, 100);
 
 }
 

@@ -17,8 +17,7 @@
 #define true 1
 #define false 0
 
-void init_fnd();
-
+void init_fnd(SPI_HandleTypeDef *hspi2);
 
 void send(uint8_t X);
 

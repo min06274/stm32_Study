@@ -64,12 +64,12 @@ void Error_Handler(void);
 #define PB0_TEMP_SET_UP_Pin GPIO_PIN_0
 #define PB0_TEMP_SET_UP_GPIO_Port GPIOB
 #define PB0_TEMP_SET_UP_EXTI_IRQn EXTI0_IRQn
-#define FND_RCLK_Pin GPIO_PIN_13
-#define FND_RCLK_GPIO_Port GPIOB
-#define FND_DIO_Pin GPIO_PIN_14
-#define FND_DIO_GPIO_Port GPIOB
-#define FND_SCLK_Pin GPIO_PIN_15
+#define FND_SCLK_Pin GPIO_PIN_13
 #define FND_SCLK_GPIO_Port GPIOB
+#define FND_RCLK_Pin GPIO_PIN_14
+#define FND_RCLK_GPIO_Port GPIOB
+#define FND_DIO_Pin GPIO_PIN_15
+#define FND_DIO_GPIO_Port GPIOB
 #define PB5_RELAY_ON_OFF_CTRL_Pin GPIO_PIN_5
 #define PB5_RELAY_ON_OFF_CTRL_GPIO_Port GPIOB
 #define PB6_LED1_Pin GPIO_PIN_6
