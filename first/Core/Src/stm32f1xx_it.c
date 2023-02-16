@@ -45,6 +45,7 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
 static uint32_t m_time = 0;
+static uint32_t m_button_before_time = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -213,7 +214,12 @@ void EXTI0_IRQHandler(void)
   HAL_GPIO_EXTI_IRQHandler(PB0_TEMP_SET_UP_Pin);
   /* USER CODE BEGIN EXTI0_IRQn 1 */
 
+  if((HAL_GetTick()-m_button_before_time) > 100)
+  {
   g_f_sw_up = 1;
+  }
+
+  m_button_before_time = HAL_GetTick();
   /* USER CODE END EXTI0_IRQn 1 */
 }
 
